@@ -19,19 +19,19 @@ class Inhabitant:
 
     @property
     def profession(self):
-        return self.profession
+        return self.__profession
 
-    @property.getter
-    def profession(self):
-        return self.profession
+    @profession.setter
+    def profession(self, value):
+        self.__profession = value
 
     @property
     def has_roof(self):
         return self.has_roof
 
-    @property.getter
-    def has_roof(self):
-        return self.has_roof
+    @has_roof.setter
+    def has_roof(self, value):
+        self.__has_roof = value
 
     def gain_happiness(self, value):
         self.happiness += value
