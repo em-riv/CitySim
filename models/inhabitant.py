@@ -1,0 +1,3 @@
+class Inhabitant:
+
+    pass
