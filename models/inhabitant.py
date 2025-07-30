@@ -6,7 +6,7 @@ class Inhabitant:
         self.__name = name
         self.__age = age
         self.__profession = profession
-        self.__happiness = happiness
+        self.happiness = happiness
         self.__has_roof = has_roof
 
     @property
@@ -21,13 +21,9 @@ class Inhabitant:
     def profession(self):
         return self.profession
 
-    @property
-    def happiness(self):
-        return self.happiness
-
     @property.getter
-    def happiness(self):
-        return self.happiness
+    def profession(self):
+        return self.profession
 
     @property
     def has_roof(self):
@@ -36,3 +32,10 @@ class Inhabitant:
     @property.getter
     def has_roof(self):
         return self.has_roof
+
+    def gain_happiness(self, value):
+        self.happiness += value
+        return self.happiness
+
+    def lose_happiness(self, value):
+        self.happiness -= value
