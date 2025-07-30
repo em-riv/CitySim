@@ -31,6 +31,7 @@ class MenuBuilder:
 
 if __name__ == '__main__':
 
-    menu = (MenuBuilder.add_option()
-            .add_option()
+    menu = (MenuBuilder.add_option("add", lambda : print("add"))
+            .add_option("minus", lambda : print("minus"))
             .build())
+    menu.show()

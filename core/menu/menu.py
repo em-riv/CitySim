@@ -19,11 +19,11 @@ class Menu:
         :return: function associate to the menu item
         :rtype: function
         """
-        entry = input("> ")
+        entry = ""
         good_input = False
         while not good_input:
             try:
-                entry = int(entry)
+                entry = int(input(">"))
                 if 0 > entry or entry > len(self.__options.keys()):
                     raise IndexError
             except ValueError:
