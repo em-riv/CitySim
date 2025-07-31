@@ -5,7 +5,7 @@ class City:
     """
         Class City which manage all the management of each event of the day
     """
-    def __init__(self, name, arrivals=None):
+    def __init__(self, name, arrivals: list = None):
         self.__name = name
         self.__list_building = []
         self.__stock = {
