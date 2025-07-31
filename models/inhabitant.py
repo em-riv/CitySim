@@ -10,6 +10,7 @@ class Inhabitant:
         self.__profession = profession
         self.__happiness = happiness
         self.__has_roof = has_roof
+        self.__load_names()
 
     @property
     def name(self):
@@ -52,9 +53,9 @@ class Inhabitant:
             self.__happiness -= value
 
     @classmethod
-    def _load_names(cls):
+    def __load_names(cls):
         """Load name from file once"""
-        if cls.__name_list is None:
+        if cls.__name_list:
             cls.__name_list = []
             try:
                 with open('prenom.txt', 'r', encoding = "utf-8") as f:
@@ -64,16 +65,14 @@ class Inhabitant:
             except FileNotFoundError:
                 cls.__name_list = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry"]
                 print("Warning: prenom.txt not found, using default names")
-        return cls.__name_list
 
     @classmethod
     def create_random(cls):
         """Create a random inhabitant with default values"""
         import random
-        names = cls._load_names()
 
         return cls(
-            random.choice(names),
+            name =random.choice(cls.__name_list),
             age = random.randint(18, 65),
             profession = random.choice(cls.__professions),
             happiness = random.randint(30, 80),
