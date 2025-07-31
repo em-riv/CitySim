@@ -40,17 +40,10 @@ class Inhabitant:
     def has_roof(self, value: bool):
         self.__has_roof = value
 
-    def gain_happiness(self, value: int):
-        if self.__happiness + value >= 100:
-            self.__happiness = 100
-        else:
-            self.__happiness += value
-
-    def lose_happiness(self, value: int):
-        if self.__happiness - value <= 0:
-            self.__happiness = 0
-        else:
-            self.__happiness -= value
+    def update_happiness(self, value: int):
+        self.__happiness += value
+        if self.__happiness > 100: self.__happiness = 100
+        if self.__happiness < 0: self.__happiness = 0
 
     @classmethod
     def __load_names(cls):

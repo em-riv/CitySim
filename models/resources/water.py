@@ -1,6 +1,7 @@
-from models.resources.resource import Resource
 
 import random
+
+from models.resources.resource import Resource
 
 class Water(Resource):
 

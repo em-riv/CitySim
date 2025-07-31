@@ -1,6 +1,5 @@
-from building import Building
-from building_type import BuildingType
-
+from models.buildings.building import Building
+from models.buildings.building_type import BuildingType
 
 class Factory(Building):
  
