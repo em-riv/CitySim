@@ -8,7 +8,7 @@ class Building(ABC):
     Attributs:
     - name (str): Name of building
     - capacity (int): Capacity of the building
-    - integrity (int): Condition of the building (100% max, 0% destroyed)
+    - integrity (int): Condition of the building (100% max, 0% min)
     - type (str): Type of the building
 
     Methodes:
@@ -23,7 +23,7 @@ class Building(ABC):
         Attributs:
         - name (str): Name of building
         - capacity (int): Capacity of the building
-        - integrity (int): Condition of the building (100% max, 0% destroyed)
+        - integrity (int): Condition of the building (100% max, 0% min)
         - type (str): Type of the building
         '''
         self.name = name
