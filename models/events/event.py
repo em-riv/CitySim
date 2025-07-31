@@ -1,6 +1,7 @@
 from enum import Enum
 from random import choice
-from event_impact import EventImpact
+
+from models.events.event_impact import EventImpact
 
 class Event(Enum):
     """ Enum that represents all the events that can happen in a city, with their impact on buildings and people """

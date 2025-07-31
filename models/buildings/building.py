@@ -1,4 +1,4 @@
-from building_type import BuildingType
+from models.buildings.building_type import BuildingType
 
 class Building:
     '''
@@ -17,9 +17,17 @@ class Building:
         - __type (str): Type of the building
         '''
         self.__name = name
-        self.__capacity = capacity
+        self._capacity = capacity
         self.__integrity = 100
         self.__type = type
+    
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def integrity(self):
+        return self.__integrity
 
     def building_damage(self, damage):
         '''

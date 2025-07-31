@@ -1,5 +1,12 @@
+
 from models.buildings.building_type import BuildingType
-from inhabitant import Inhabitant
+from models.buildings.factory import Factory
+from models.buildings.house import House
+from models.buildings.park import Park
+from models.events.event import Event
+from models.inhabitant import Inhabitant
+from models.resources.water import Water
+
 
 class City:
     """
@@ -34,7 +41,18 @@ class City:
         print(*self.__list_building)
 
     def add_building(self, building: BuildingType):
-        pass
+        citizen = Inhabitant("citizen 1", 12, "student")
+        house = House("maison" , 5)
+        house.assign_inhabitant(citizen)
+        self.__list_building.append(house)
+
+        park = Park("Central Park", 5)
+        homeless = Inhabitant("homeless 1", 22, "unemployed")
+        park.assign_inhabitant(homeless)
+        self.__list_building.append(park)
+
+        factory = Factory("Factory", 5 , Water())
+        self.__list_building.append(factory)
 
     def produce_resources(self):
         pass
@@ -60,3 +78,21 @@ class City:
         new_inhabitant = Inhabitant.create_random()
         self.add_inhabitant(new_inhabitant)
         return new_inhabitant
+    
+    def apply_event(self, event: Event):
+        for building in self.__list_building :
+            building.building_damage(event.damages)
+            if (isinstance(building, House) or isinstance(building, Park)) :
+                inhabitants = building.inhabitants
+                for inhabitant in inhabitants :
+                    inhabitant.update_happiness(event.happiness)
+
+
+if __name__ == "__main__" :
+    city = City("Bruxelles")
+    city.add_building(BuildingType.HOUSING)
+    city.apply_event(Event.FIRE)
+    city.apply_event(Event.NONE)
+    city.apply_event(Event.FLOOD)
+    city.apply_event(Event.STRIKE)
+    city.apply_event(Event.LOCAL_CELEBRATION)
