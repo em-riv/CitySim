@@ -1,4 +1,6 @@
 class Inhabitant:
+    __name_list = []
+    __professions = ["Engineer", "Teacher", "Doctor", "Artist", "Chef", "Lawyer", "Writer", "Nurse"]
 
     """This class represents the inhabitant model of the city"""
 
@@ -15,7 +17,7 @@ class Inhabitant:
 
     @property
     def age(self):
-        return self.age
+        return self.__age
 
     @property
     def profession(self):
@@ -31,7 +33,7 @@ class Inhabitant:
 
     @property
     def has_roof(self):
-        return self.has_roof
+        return self.__has_roof
 
     @has_roof.setter
     def has_roof(self, value: bool):
@@ -48,3 +50,32 @@ class Inhabitant:
             self.__happiness = 0
         else:
             self.__happiness -= value
+
+    @classmethod
+    def _load_names(cls):
+        """Load name from file once"""
+        if cls.__name_list is None:
+            cls.__name_list = []
+            try:
+                with open('prenom.txt', 'r', encoding = "utf-8") as f:
+                    for line in f:
+                        name = line.strip()
+                        cls.__name_list.append(name)
+            except FileNotFoundError:
+                cls.__name_list = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry"]
+                print("Warning: prenom.txt not found, using default names")
+        return cls.__name_list
+
+    @classmethod
+    def create_random(cls):
+        """Create a random inhabitant with default values"""
+        import random
+        names = cls._load_names()
+
+        return cls(
+            random.choice(names),
+            age = random.randint(18, 65),
+            profession = random.choice(cls.__professions),
+            happiness = random.randint(30, 80),
+            has_roof = False
+        )
