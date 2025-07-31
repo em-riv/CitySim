@@ -59,7 +59,7 @@ class Logger:
                         day = line.split("|")[0].strip()[-1]
                         if int(day) == day_log:
                             logs.append(line)
-        except FileExistsError:
+        except FileNotFoundError:
             print("There is no logs")
         return logs
 
