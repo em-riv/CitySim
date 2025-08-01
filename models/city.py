@@ -43,12 +43,12 @@ class City:
             message += f"\t{building.__str__()}\n"
         return message
 
-    def add_building(self, building, resource_type : ResourceType = None):
-        if building.building_type == BuildingType.HOUSING:
+    def add_building(self, building_type, resource_type : ResourceType = None):
+        if building_type == BuildingType.HOUSING:
             building = House("El bordel", 10)
-        elif building.building_type == BuildingType.ENTERTAINMENT:
+        elif building_type == BuildingType.ENTERTAINMENT:
             building = Park("Boulogne park", float('inf'))
-        elif building.building_type == BuildingType.PRODUCTION:
+        elif building_type == BuildingType.PRODUCTION:
             if resource_type is None:
                 raise ValueError("Factory is not working")
             resource = None
