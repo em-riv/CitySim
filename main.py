@@ -3,6 +3,8 @@ import os
 from core.logger.logger import Logger
 from core.menu.menu_builder import MenuBuilder
 from models.city import City
+from models.buildings.building_type import BuildingType
+from models.resources.resource_type import ResourceType
 from models.events.event import Event
 
 city : City = None
@@ -35,8 +37,50 @@ def create_city():
 
 
 def add_building():
-    print("Not implemented yet")
-    clear()
+    global city
+    if city is None:
+        print("you must creat a City firt !")
+        clear()
+        return
+
+    print("Choose building type: \n[1] -House \n[2] -Park \n[3] -Factory")
+    choice = int(input("Enter number: "))
+
+    
+    building_type = None
+    recource_type = None
+
+    if choice == 1:
+        building_type = BuildingType.HOUSING
+        city.add_building(building_type,recource_type)
+        print(f"\n{building_type.name} successfully added to the City !\n")
+    elif choice == 2:
+        building_type = BuildingType.ENTERTAINMENT
+        city.add_building(building_type,recource_type)
+        print(f"\n{building_type.name} successfully added to the City !\n")
+    elif choice == 3:
+        building_type = BuildingType.PRODUCTION
+        print("Choose your Factory type: \n[1] -Water production \n[2] -Food production \n[3] -Electricity production")
+        choiceType = int(input("Enter number: "))
+        match choiceType:
+            case 1:
+                recource_type = ResourceType.WATER
+            case 2:
+                recource_type = ResourceType.FOOD
+            case 3:
+                recource_type = ResourceType.ELECTRICITY
+            case _:
+                print("Invalide resource type !")
+                clear()
+                return
+        city.add_building(building_type,recource_type)
+        print(f"\n{building_type.name} successfully added to the City !\n")
+
+    else:
+        print("Invalide building type")
+        clear()
+           
+ 
 
 def distribute_inhabitants():
     from math import ceil
