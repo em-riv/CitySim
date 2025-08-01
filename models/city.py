@@ -114,10 +114,11 @@ class City:
     def assign_inhabitant(self):
         for inhabitant in self.arrivals:
             assigned = False
-
+            print(f"Assigning {inhabitant.name} a place to live")
             # Trying houses first
             for building in self.__list_building:
                 if isinstance(building, House) and building.assign_inhabitant(inhabitant):
+                    print(f"{inhabitant.name} find a home")
                     inhabitant.has_roof = True
                     assigned = True
                     break
@@ -126,9 +127,12 @@ class City:
             if not assigned:
                 for building in self.__list_building:
                     if isinstance(building, Park) and building.assign_inhabitant(inhabitant):
+                        print(f"{inhabitant.name} find a nice place in the park")
                         inhabitant.has_roof = False
                         assigned = True
                         break
+                if not assigned:
+                    print(f"{inhabitant.name} remains a refugee")
 
     def give_home(self):
         """Move inhabitants from parks to available houses"""

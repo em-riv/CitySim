@@ -48,10 +48,10 @@ class Inhabitant:
     @classmethod
     def __load_names(cls):
         """Load name from file once"""
-        if cls.__name_list:
+        if not cls.__name_list:
             cls.__name_list = []
             try:
-                with open('prenom.txt', 'r', encoding = "utf-8") as f:
+                with open('core/tools/prenom/prenom.txt', 'r', encoding = "utf-8") as f:
                     for line in f:
                         name = line.strip()
                         cls.__name_list.append(name)
@@ -63,6 +63,8 @@ class Inhabitant:
     def create_random(cls):
         """Create a random inhabitant with default values"""
         import random
+        if not cls.__name_list:
+            cls.__load_names()
 
         return cls(
             name =random.choice(cls.__name_list),
