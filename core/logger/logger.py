@@ -29,7 +29,7 @@ class Logger:
         file_handler.setLevel(logging.DEBUG)
 
         # Determine the format of the message
-        formatter = logging.Formatter("Day %(day)s %(levelname)s : %(message)s")
+        formatter = logging.Formatter("Day %(day)s | %(levelname)s : %(message)s")
 
         file_handler.setFormatter(formatter)
         self.__logger.addHandler(file_handler)
@@ -48,6 +48,18 @@ class Logger:
 
     def critical(self, day: int, message: str):
         self.__logger.critical(message, extra={"day": day})
+
+    def get_log_day(self, day_log: int):
+        logs = []
+        try:
+            with open(self.__filename, "r") as f:
+                    for line in f.readlines():
+                        day = line.split("|")[0].strip()[-1]
+                        if int(day) == day_log:
+                            logs.append(line)
+        except FileNotFoundError:
+            print("There is no logs")
+        return logs
 
     def clear(self):
         """

@@ -23,7 +23,7 @@ class Menu:
         good_input = False
         while not good_input:
             try:
-                entry = int(input(">"))
+                entry = int(input("> "))
                 if 0 > entry or entry > len(self.__options.keys()):
                     raise IndexError
             except ValueError:
