@@ -38,7 +38,7 @@ class City:
         return self.__city_happiness
 
     def __str__(self):
-        message = f"City : {self.__name}\nResource: "
+        message = f"City : {self.__name}\nHappiness: {self.happiness}\nResource: "
         for key, value in self.__stock.items():
             message += f"\t{key}: {value}\n"
         message += "Building:\n"
