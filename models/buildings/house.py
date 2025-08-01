@@ -12,6 +12,7 @@ class House(Building):
         return self.__inhabitants
 
 
+
     def assign_inhabitant(self, inhabitant):
         if len(self.__inhabitants) < self._capacity:
             self.__inhabitants.append(inhabitant)
