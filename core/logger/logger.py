@@ -1,7 +1,5 @@
 import logging
 import os
-from sys import exception
-
 
 class Logger:
 
