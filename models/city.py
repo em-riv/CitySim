@@ -9,6 +9,7 @@ from models.resources.water import Water
 from models.resources.electricity import Electricity
 from models.resources.food import Food
 from models.resources.resource_type import ResourceType
+from models.stock import Stock
 
 
 class City:
@@ -19,11 +20,7 @@ class City:
     def __init__(self, name, arrivals: list = None):
         self.__name = name
         self.__list_building = []
-        self.__stock = {
-            "Water": 0,
-            "Electricity": 0,
-            "Food": 0
-        }
+        self.__stock = Stock()
         self.arrivals = arrivals if arrivals is not None else []
 
     @property
@@ -69,17 +66,24 @@ class City:
             raise ValueError("Invalide building type")
         self.__list_building.append(building)
 
-
+    def consume_resources(self):
+        for building in self.__list_building :
+            self.__stock.consume_electricity()
+            self.__stock.consume_water()
+            if (isinstance(building, House) or isinstance(building, Park)) :
+                inhabitants = building.inhabitants
+                for _ in inhabitants :
+                    self.__stock.consume_food()
 
     def produce_resources(self):
         list_factory = [building for building in self.__list_building if building.type is BuildingType.PRODUCTION]
         for building in list_factory:
             if building.resource_type is ResourceType.ELECTRICITY:
-                self.__stock["Electricity"] += building.produce()
+                self.__stock.stock_electricity(building.produce())
             elif building.resource_type is ResourceType.FOOD:
-                self.__stock["Food"] += building.produce()
+                self.__stock.stock_food(building.produce())
             elif building.resource_type is ResourceType.WATER:
-                self.__stock["Water"] += building.produce()
+                self.__stock.stock_water(building.produce())
 
     def next_turn(self, event: Event):
         self.__apply_event(event)
