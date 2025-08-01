@@ -1,15 +1,13 @@
 from models.buildings.building_type import BuildingType
-from models.inhabitant import Inhabitant
 from models.resources.resource_type import ResourceType
-
 from models.buildings.house import House
 from models.buildings.park import Park
 from models.buildings.factory import Factory
-from models.buildings.house import House
-from models.buildings.park import Park
 from models.events.event import Event
 from models.inhabitant import Inhabitant
 from models.resources.water import Water
+from models.resource.electricity import Electricity
+from models.resource.food import Food
 
 
 class City:
@@ -46,19 +44,22 @@ class City:
             message += f"\t{building.__str__()}\n"
         return message
 
-    def add_building(self, building: BuildingType):
-        citizen = Inhabitant("citizen 1", 12, "student")
-        house = House("maison" , 5)
-        house.assign_inhabitant(citizen)
-        self.__list_building.append(house)
+    def add_building(self, building):
+        if building.building_type == BuildingType.HOUSING:
+            building = House("El bordel", 10)
+        elif building.building_type == BuildingType.ENTERTAINMENT:
+            building = Park("Boulogne park", float('inf'))
+        elif building.building_type == BuildingType.PRODUCTION:
+            if resources is None:
+                raise ValueError("Factory is not working")
+            resource = Electricity()
+            building = Factory("AssCompact", 0, resource)
 
-        park = Park("Central Park", 5)
-        homeless = Inhabitant("homeless 1", 22, "unemployed")
-        park.assign_inhabitant(homeless)
-        self.__list_building.append(park)
+        else:
+            raise ValueError("Invalide building type")
+        self.__list_building.append(building)
 
-        factory = Factory("Factory", 5 , Water())
-        self.__list_building.append(factory)
+
 
     def produce_resources(self):
         list_factory = [building for building in self.__list_building if building.type is BuildingType.PRODUCTION]
@@ -72,7 +73,6 @@ class City:
 
     def next_turn(self):
         pass
-
     def add_inhabitant(self, inhabitant):
         """
         Add an inhabitant to the city.
