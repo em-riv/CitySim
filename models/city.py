@@ -35,7 +35,7 @@ class City:
     @property
     def happiness(self):
         # The happiness will be dependent of all the inhabitant
-        return 100
+        return self.__city_happiness
 
     def __str__(self):
         message = f"City : {self.__name}\nResource: "
@@ -107,7 +107,7 @@ class City:
     def __apply_event(self, event: Event):
         for building in self.__list_building :
             building.building_damage(event.damages)
-            if (isinstance(building, House) or isinstance(building, Park)) :
+            if isinstance(building, House) or isinstance(building, Park):
                 inhabitants = building.inhabitants
                 for inhabitant in inhabitants :
                     inhabitant.update_happiness(event.happiness)
@@ -157,22 +157,18 @@ class City:
         return moved_count
 
     def city_happiness(self):
-        self.__city_happiness = 0  # Reset or initialise city happiness levels
         total_inhabitants = 0
         for building in self.__list_building:
-            if isinstance(building, House):
+            if not isinstance(building, Factory):
+                total_inhabitants += len(building.inhabitants)
                 for inhabitant in building.inhabitants():
                     self.__city_happiness += inhabitant.happiness
-                    total_inhabitants += 1
-            elif isinstance(building, Park):
-                for homeless in building.inhabitants():
-                    self.__city_happiness += homeless.happiness
-                    total_inhabitants += 1
 
-        if total_inhabitants > 0:
-            self.__city_happiness = self.__city_happiness // total_inhabitants
-        else:
-            self.__city_happiness = 0
+        total_inhabitants += len(self.arrivals)
+        for homeless in self.arrivals:
+            self.__city_happiness += homeless.happiness
+
+        self.__city_happiness = self.__city_happiness // total_inhabitants
 
 if __name__ == "__main__" :
     city = City("Bruxelles")
