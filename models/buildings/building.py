@@ -7,7 +7,8 @@ class Building:
     - building_repair(repair): repair building
     - __str__(): return description of the building
     '''
-    def __init__(self, name, capacity, type : BuildingType):
+
+    def __init__(self, name, capacity, type: BuildingType):
         '''
         Constructor
         Attributs:
@@ -20,10 +21,14 @@ class Building:
         self._capacity = capacity
         self.__integrity = 100
         self.__type = type
-    
+
     @property
     def name(self):
         return self.__name
+
+    @property
+    def type(self):
+        return self.__type
 
     @property
     def integrity(self):
@@ -49,7 +54,6 @@ class Building:
         self.__integrity += repair
         if self.__integrity > 100:
             self.__integrity = 100
-    
 
     def __str__(self):
         '''

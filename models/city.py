@@ -1,6 +1,7 @@
-
 from models.buildings.building_type import BuildingType
-from inhabitant import Inhabitant
+from models.inhabitant import Inhabitant
+from models.resources.resource_type import ResourceType
+
 from models.buildings.house import House
 from models.buildings.park import Park
 from models.buildings.factory import Factory
@@ -15,13 +16,14 @@ class City:
     """
         Class City which manage all the management of each event of the day
     """
+
     def __init__(self, name, arrivals: list = None):
         self.__name = name
         self.__list_building = []
         self.__stock = {
             "Water": 0,
-            "Electricity" : 0,
-            "Food" : 0
+            "Electricity": 0,
+            "Food": 0
         }
         self.arrivals = arrivals if arrivals is not None else []
 
@@ -36,12 +38,13 @@ class City:
         return 100
 
     def __str__(self):
-        print(f"City : {self.__name}")
-        print(f"Resource:")
+        message = f"City : {self.__name}\nResource: "
         for key, value in self.__stock.items():
-            print(f"\t{key}: {value}")
-        print("Building")
-        print(*self.__list_building)
+            message += f"\t{key}: {value}\n"
+        message += "Building:\n"
+        for building in self.__list_building:
+            message += f"\t{building.__str__()}\n"
+        return message
 
     def add_building(self, building: BuildingType):
         citizen = Inhabitant("citizen 1", 12, "student")
@@ -58,7 +61,14 @@ class City:
         self.__list_building.append(factory)
 
     def produce_resources(self):
-        pass
+        list_factory = [building for building in self.__list_building if building.type is BuildingType.PRODUCTION]
+        for building in list_factory:
+            if building.resource_type is ResourceType.ELECTRICITY:
+                self.__stock["Electricity"] += building.produce()
+            elif building.resource_type is ResourceType.FOOD:
+                self.__stock["Food"] += building.produce()
+            elif building.resource_type is ResourceType.WATER:
+                self.__stock["Water"] += building.produce()
 
     def next_turn(self):
         pass
