@@ -3,6 +3,7 @@ import os
 from core.logger.logger import Logger
 from core.menu.menu_builder import MenuBuilder
 from models.city import City
+from models.events.event import Event
 
 city = None
 current_day = 0
@@ -41,7 +42,12 @@ def distribute_inhabitants():
     clear()
 
 def pass_day():
-    print("Not implemented yet")
+    print("Sunrise")
+    print("Generating a random event")
+    event = Event.getRandomEvent()
+    print(f"Event generated: {event.name}")
+    city.next_turn(event)
+    print("Sunset")
     clear()
 
 def show_log():

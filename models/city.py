@@ -6,9 +6,9 @@ from models.buildings.factory import Factory
 from models.events.event import Event
 from models.inhabitant import Inhabitant
 from models.resources.water import Water
-from models.resource.electricity import Electricity
-from models.resource.food import Food
-from models.resource.resource_type import ResourceType
+from models.resources.electricity import Electricity
+from models.resources.food import Food
+from models.resources.resource_type import ResourceType
 
 
 class City:
@@ -81,8 +81,9 @@ class City:
             elif building.resource_type is ResourceType.WATER:
                 self.__stock["Water"] += building.produce()
 
-    def next_turn(self):
-        pass
+    def next_turn(self, event: Event):
+        self.__apply_event(event)
+
     def add_inhabitant(self, inhabitant):
         """
         Add an inhabitant to the city.
@@ -102,7 +103,7 @@ class City:
         self.add_inhabitant(new_inhabitant)
         return new_inhabitant
 
-    def apply_event(self, event: Event):
+    def __apply_event(self, event: Event):
         for building in self.__list_building :
             building.building_damage(event.damages)
             if (isinstance(building, House) or isinstance(building, Park)) :
