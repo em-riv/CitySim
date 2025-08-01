@@ -1,5 +1,8 @@
 
 from models.buildings.building_type import BuildingType
+from inhabitant import Inhabitant
+from models.buildings.house import House
+from models.buildings.park import Park
 from models.buildings.factory import Factory
 from models.buildings.house import House
 from models.buildings.park import Park
@@ -78,7 +81,7 @@ class City:
         new_inhabitant = Inhabitant.create_random()
         self.add_inhabitant(new_inhabitant)
         return new_inhabitant
-    
+
     def apply_event(self, event: Event):
         for building in self.__list_building :
             building.building_damage(event.damages)
@@ -87,6 +90,46 @@ class City:
                 for inhabitant in inhabitants :
                     inhabitant.update_happiness(event.happiness)
 
+    def assign_inhabitant(self):
+        for inhabitant in self.arrivals:
+            assigned = False
+
+            # Trying houses first
+            for building in self.__list_building:
+                if isinstance(building, House) and building.assign_inhabitant(inhabitant):
+                    inhabitant.has_roof = True
+                    assigned = True
+                    break
+
+            # Trying parks next
+            if not assigned:
+                for building in self.__list_building:
+                    if isinstance(building, Park) and building.assign_inhabitant(inhabitant):
+                        inhabitant.has_roof = False
+                        assigned = True
+                        break
+
+    def give_home(self):
+        """Move inhabitants from parks to available houses"""
+
+        # Find all park dwellers (people without proper homes)
+        homeless = []
+        for building in self.__list_building:
+            if isinstance(building, Park):
+                # Get copy of habitants list to avoid modification during iteration
+                for inhabitant in building._Park__habitants[:]:  # Using name mangling to access private attribute
+                    homeless.append((inhabitant, building))
+
+        # Try to move them to houses
+        for inhabitant, current_park in homeless:
+            for building in self.__list_building:
+                if isinstance(building, House) and building.assign_inhabitant(inhabitant):
+                    # Successfully moved to house
+                    inhabitant.has_roof = True
+                    # Remove from park
+                    current_park._Park__habitants.remove(inhabitant)
+                    print(f"Moved {inhabitant} from park to house: {building._Building__name}")
+                    break
 
 if __name__ == "__main__" :
     city = City("Bruxelles")
