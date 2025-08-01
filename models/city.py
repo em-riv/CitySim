@@ -25,6 +25,7 @@ class City:
             "Food": 0
         }
         self.arrivals = arrivals if arrivals is not None else []
+        self.__city_happiness = 0
 
     @property
     def population(self):
@@ -151,6 +152,16 @@ class City:
                     current_park._Park__habitants.remove(inhabitant)
                     print(f"Moved {inhabitant} from park to house: {building._Building__name}")
                     break
+
+    def city_happiness(self):
+        self.__city_happiness = 0  # Reset or initialise city happiness levels
+        for building in self.__list_building:
+            if isinstance(building, House):
+                for inhabitant in building.inhabitants():
+                    self.__city_happiness += inhabitant.happiness
+            elif isinstance(building, Park):
+                for homeless in building.inhabitants():
+                    self.__city_happiness += homeless.happiness
 
 if __name__ == "__main__" :
     city = City("Bruxelles")
