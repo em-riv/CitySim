@@ -134,34 +134,45 @@ class City:
     def give_home(self):
         """Move inhabitants from parks to available houses"""
 
-        # Find all park dwellers (people without proper homes)
+        # Collect all homeless
         homeless = []
         for building in self.__list_building:
             if isinstance(building, Park):
-                # Get copy of habitants list to avoid modification during iteration
-                for inhabitant in building._Park__habitants[:]:  # Using name mangling to access private attribute
+                for inhabitant in building.inhabitants():
                     homeless.append((inhabitant, building))
 
-        # Try to move them to houses
+        # Try to move each homeless to a house
+        moved_count = 0
         for inhabitant, current_park in homeless:
             for building in self.__list_building:
-                if isinstance(building, House) and building.assign_inhabitant(inhabitant):
-                    # Successfully moved to house
-                    inhabitant.has_roof = True
-                    # Remove from park
-                    current_park._Park__habitants.remove(inhabitant)
-                    print(f"Moved {inhabitant} from park to house: {building._Building__name}")
-                    break
+                if isinstance(building, House):
+                    if building.assign_inhabitant(inhabitant):
+                        inhabitant.has_roof = True
+                        current_park.remove_inhabitant(inhabitant)
+                        moved_count += 1
+                        print(f"Moved {inhabitant.name} from park to house")
+                        break
+
+        print(f"Successfully moved {moved_count} inhabitants from parks to houses")
+        return moved_count
 
     def city_happiness(self):
         self.__city_happiness = 0  # Reset or initialise city happiness levels
+        total_inhabitants = 0
         for building in self.__list_building:
             if isinstance(building, House):
                 for inhabitant in building.inhabitants():
                     self.__city_happiness += inhabitant.happiness
+                    total_inhabitants += 1
             elif isinstance(building, Park):
                 for homeless in building.inhabitants():
                     self.__city_happiness += homeless.happiness
+                    total_inhabitants += 1
+
+        if total_inhabitants > 0:
+            self.__city_happiness = self.__city_happiness // total_inhabitants
+        else:
+            self.__city_happiness = 0
 
 if __name__ == "__main__" :
     city = City("Bruxelles")
