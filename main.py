@@ -5,8 +5,9 @@ from core.menu.menu_builder import MenuBuilder
 from models.city import City
 from models.events.event import Event
 
-city = None
+city : City = None
 current_day = 0
+
 def clear():
     input("Press enter to continue...")
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -38,7 +39,14 @@ def add_building():
     clear()
 
 def distribute_inhabitants():
-    print("Not implemented yet")
+    from math import ceil
+    if city is None:
+        print("There is not city created yet")
+    else:
+        nb_arrivals = ceil(10 * city.happiness/100)
+        city.add_random_inhabitants(nb_arrivals)
+        print(f"There are {nb_arrivals} refugees arriving in City.")
+        city.assign_inhabitant()
     clear()
 
 def pass_day():
