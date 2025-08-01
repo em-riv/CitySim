@@ -8,6 +8,7 @@ from models.inhabitant import Inhabitant
 from models.resources.water import Water
 from models.resource.electricity import Electricity
 from models.resource.food import Food
+from models.resource.resource_type import ResourceType
 
 
 class City:
@@ -44,15 +45,24 @@ class City:
             message += f"\t{building.__str__()}\n"
         return message
 
-    def add_building(self, building):
+    def add_building(self, building, resource_type : ResourceType = None):
         if building.building_type == BuildingType.HOUSING:
             building = House("El bordel", 10)
         elif building.building_type == BuildingType.ENTERTAINMENT:
             building = Park("Boulogne park", float('inf'))
         elif building.building_type == BuildingType.PRODUCTION:
-            if resources is None:
+            if resource_type is None:
                 raise ValueError("Factory is not working")
-            resource = Electricity()
+            resource = None
+            match resource_type:
+                case ResourceType.WATER:
+                    resource = Water()
+                case ResourceType.FOOD:
+                    resource = Food()
+                case ResourceType.ELECTRICITY:
+                    resource = Electricity()
+                case _:
+                    raise ValueError("Unknown ResourceType")
             building = Factory("AssCompact", 0, resource)
 
         else:
